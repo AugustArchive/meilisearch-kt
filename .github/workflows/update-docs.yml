@@ -30,49 +30,49 @@ jobs:
     name: Update documentation at 00:00
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v3
+      - name: Checkout the repository
+        uses: actions/checkout@v3
 
-    - name: Setup Java 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 17
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
 
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
-    - name: Let gradlew be executable
-      run: chmod +x ./gradlew
+      - name: Let gradlew be executable
+        run: chmod +x ./gradlew
 
-    - name: Generate documentation
-      run: chmod +x ./scripts/deploy-docs.sh && ./scripts/deploy-docs.sh
+      - name: Generate documentation
+        run: chmod +x ./scripts/deploy-docs.sh && ./scripts/deploy-docs.sh
 
-    - name: Check if Git repo is dirty
-      id: git_status
-      run: |
-        if [ -n "$(git status --porcelain)" ]; then
-          echo '::set-output name=DIRTY::true'
-        else
-          echo '::set-output name=DIRTY::false'
-        fi
+      - name: Check if Git repo is dirty
+        id: git_status
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo '::set-output name=DIRTY::true'
+          else
+            echo '::set-output name=DIRTY::false'
+          fi
 
-    - name: Commit changes (if dirty)
-      if: contains(steps.git_status.outputs.DIRTY, 'true')
-      run: |
-        git config --global user.name "Noel[bot]"
-        git config --global user.email "noelbot@users.noreply.github.com"
-        git config --global committer.name "Noel"
-        git config --global committer.email "cutie@floofy.dev"
-        
-        git add .
-        git commit -m "chore: update API documentation"
-        git push -u origin master
+      - name: Commit changes (if dirty)
+        if: contains(steps.git_status.outputs.DIRTY, 'true')
+        run: |
+          git config --global user.name "Noel[bot]"
+          git config --global user.email "noelbot@users.noreply.github.com"
+          git config --global committer.name "Noel"
+          git config --global committer.email "cutie@floofy.dev"
+          
+          git add .
+          git commit -m "chore: update API documentation"
+          git push -u origin master
 
-    - name: Deploy docs (if dirty)
-      uses: mhausenblas/mkdocs-deploy-gh-pages@master
-      if: contains(steps.git_status.outputs.DIRTY, 'true')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CONFIG_FILE: ./mkdocs.yml
-        EXTRA_PACKAGES: build-base
+      - name: Deploy docs (if dirty)
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        if: contains(steps.git_status.outputs.DIRTY, 'true')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG_FILE: ./mkdocs.yml
+          EXTRA_PACKAGES: build-base

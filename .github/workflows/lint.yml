@@ -79,17 +79,17 @@ jobs:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
 
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
-    - name: Let gradlew be executable
-      run: chmod +x ./gradlew
+      - name: Let gradlew be executable
+        run: chmod +x ./gradlew
 
-    - name: Lints the repository via Spotless for any linting errors.
-      run: ./gradlew spotlessCheck --no-daemon
+      - name: Lints the repository via Spotless for any linting errors.
+        run: ./gradlew spotlessCheck --no-daemon
 
-    - name: Compiles the Kotlin sources for any compiler errors
-      run: ./gradlew compileKotlin --no-daemon
+      - name: Compiles the Kotlin sources for any compiler errors
+        run: ./gradlew compileKotlin --no-daemon
 
-    - name: Unit test the project
-      run: ./gradlew test --no-daemon
+      - name: Unit test the project
+        run: ./gradlew test --no-daemon
