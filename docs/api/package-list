@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+module:data-types
+dev.floofy.meilisearch.data.types
+module:rest-client
+dev.floofy.meilisearch.rest
+dev.floofy.meilisearch.rest.apis
