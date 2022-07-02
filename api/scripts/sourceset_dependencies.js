@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":rest-client:dokkaHtmlPartial/main":[],":data-types:dokkaHtmlPartial/main":[]}'

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>waitForCompletion</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../index.html">
+<span>meilisearch-kt</span>            </a>    </div>
+    <div>1.0
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
+        <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="rest-client::dev.floofy.meilisearch.rest.task//waitForCompletion/dev.floofy.meilisearch.data.types.Task#kotlinx.coroutines.CoroutineScope#kotlin.Boolean#dev.floofy.meilisearch.rest.RESTClient/PointingToDeclaration//-178911562">
+  <div class="breadcrumbs"><a href="../index.html">rest-client</a><span class="delimiter">/</span><a href="index.html">dev.floofy.meilisearch.rest.task</a><span class="delimiter">/</span><a href="wait-for-completion.html">waitForCompletion</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>wait</span><wbr><span>For</span><wbr><span><span>Completion</span></span></h1>
+  </div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":rest-client:dokkaHtmlPartial/main"><div class="symbol monospace"><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../data-types/dev.floofy.meilisearch.data.types/-task/index.html">Task</a><span class="token punctuation">.</span><a href="wait-for-completion.html"><span class="token function">waitForCompletion</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;coroutineScope<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="token operator"> = </span>GlobalScope<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;doNotCancelOnAttempts<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;client<span class="token operator">: </span><a href="../dev.floofy.meilisearch.rest/-r-e-s-t-client/index.html">RESTClient</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../data-types/dev.floofy.meilisearch.data.types/-task/index.html">Task</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Creates a coroutine job to call <a href="../dev.floofy.meilisearch.rest/-r-e-s-t-client/task.html">#task(uid)</a>, checks the task status, and returns the succeeded task if it was ever a success. After 10 attempts, the job will cancel and a <span data-unresolved-link="kotlinx.coroutines/JobCancellationException///PointingToDeclaration/">JobCancellationException</span> will be emitted.</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>coroutine</span><wbr><span><span>Scope</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The coroutine scope to execute the job in</p></div></div></div></div></div><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>do</span><wbr><span>Not</span><wbr><span>Cancel</span><wbr><span>On</span><wbr><span><span>Attempts</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">This parameter will not cancel the coroutine if 10 attempts were done to check the     task's status. This is useful if you have a lot of documents.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>client</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The REST client to use.</p></div></div></div></div></div></div></div><h2 class="">Throws</h2><div class="table"><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-exception/index.html"><span>kotlin.</span><wbr><span>Exception</span></a></div></span></div><div><div class="title"><p class="paragraph">Any other exception except <a href="../dev.floofy.meilisearch.rest/-task-failed-exception/index.html">TaskFailedException</a> or <span data-unresolved-link="kotlinx.coroutines/JobCancellationException///PointingToDeclaration/">JobCancellationException</span> has been thrown.</p></div></div></div></div><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../dev.floofy.meilisearch.rest/-task-failed-exception/index.html"><span>dev.</span><wbr><span>floofy.</span><wbr><span>meilisearch.</span><wbr><span>rest.</span><wbr><span>Task</span><wbr><span>Failed</span><wbr><span><span>Exception</span></span></a></div></span></div><div><div class="title"><p class="paragraph">If the task has ever failed</p></div></div></div></div><div class="table-row" data-filterable-current=":rest-client:dokkaHtmlPartial/main" data-filterable-set=":rest-client:dokkaHtmlPartial/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><span data-unresolved-link="kotlinx.coroutines/JobCancellationException///PointingToDeclaration/"><span>kotlinx.</span><wbr><span>coroutines.</span><wbr><span>Job</span><wbr><span>Cancellation</span><wbr><span><span>Exception</span></span></span></div></span></div><div><div class="title"><p class="paragraph">If after 10 attempts, it's still enqueuing/processing, the job will     stop and this will be thrown. You can recall <a href="wait-for-completion.html">waitForCompletion</a> again if this     ever happens. This will never happen if <a href="wait-for-completion.html">doNotCancelOnAttempts</a> is used.</p></div></div></div></div></div></div></div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+    </div>
+</div>
+
+</body></html>
+
