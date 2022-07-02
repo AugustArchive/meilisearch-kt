@@ -5,4 +5,6 @@ module:data-types
 dev.floofy.meilisearch.data.types
 module:rest-client
 dev.floofy.meilisearch.rest
-dev.floofy.meilisearch.rest.apis
+dev.floofy.meilisearch.rest.request
+dev.floofy.meilisearch.rest.search
+dev.floofy.meilisearch.rest.task

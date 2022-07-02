@@ -33,4 +33,5 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:2.0.3")
     implementation("io.ktor:ktor-client-core:2.0.3")
     api(project(":data-types"))
+    api(kotlin("reflect"))
 }

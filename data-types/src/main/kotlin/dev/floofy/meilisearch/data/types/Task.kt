@@ -23,8 +23,6 @@
 
 package dev.floofy.meilisearch.data.types
 
-import kotlinx.datetime.LocalDateTime
-
 /**
  * Represents information about an asynchronous method.
  *
@@ -38,8 +36,8 @@ data class Task(
     val type: String,
     val error: MeilisearchError? = null,
     val duration: String? = null,
-    val enqueuedAt: LocalDateTime,
-    val startedAt: LocalDateTime? = null,
-    val finishedAt: LocalDateTime? = null,
+    val enqueuedAt: String,
+    val startedAt: String? = null,
+    val finishedAt: String? = null,
     val details: TaskDetails? = null
 )

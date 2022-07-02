@@ -23,45 +23,55 @@
 
 package dev.floofy.meilisearch.rest.tests
 
+import dev.floofy.meilisearch.rest.RESTClient
 import dev.floofy.utils.slf4j.logging
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
 import org.testcontainers.utility.DockerImageName
 import java.util.concurrent.atomic.AtomicBoolean
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 
 open class AbstractMeilisearchTest {
-    var container: GenericContainer<*>? = null
-    private val closed: AtomicBoolean = AtomicBoolean(false)
-    private val log by logging<AbstractMeilisearchTest>()
+    companion object {
+        var container: GenericContainer<*>? = null
+        private val closed: AtomicBoolean = AtomicBoolean(false)
+        private val log by logging<AbstractMeilisearchTest>()
 
-    @BeforeTest
-    fun startContainer() {
-        if (container != null) {
-            throw IllegalStateException("Cannot call #startContainer() more than once.")
+        @JvmStatic
+        fun createClient(): RESTClient = RESTClient {
+            endpoint = "${container!!.host}:${container!!.getMappedPort(7700)}"
         }
 
-        log.info("Starting container...")
-        val image = DockerImageName.parse("getmeili/meilisearch:v0.27.2")
-        container = GenericContainer(image)
-            .withExposedPorts(7700)
+        @BeforeClass
+        @JvmStatic
+        fun startContainer() {
+            if (container != null) {
+                throw IllegalStateException("Cannot call #startContainer() more than once.")
+            }
 
-        container!!.setWaitStrategy(HttpWaitStrategy().forPort(7700))
-        container!!.start()
-    }
+            log.info("Starting container...")
+            val image = DockerImageName.parse("getmeili/meilisearch:v0.27.2")
+            container = GenericContainer(image)
+                .withExposedPorts(7700)
 
-    @AfterTest
-    fun destroyContainer() {
-        if (closed.get()) {
-            throw IllegalStateException("Cannot call #destroyContainer() more than once.")
+            container!!.setWaitStrategy(HttpWaitStrategy().forPort(7700))
+            container!!.start()
         }
 
-        if (container == null) {
-            throw IllegalStateException("Can't destroy Meilisearch container without calling #startContainer()")
-        }
+        @AfterClass
+        @JvmStatic
+        fun destroyContainer() {
+            if (closed.get()) {
+                throw IllegalStateException("Cannot call #destroyContainer() more than once.")
+            }
 
-        container!!.stop()
-        closed.set(true)
+            if (container == null) {
+                throw IllegalStateException("Can't destroy Meilisearch container without calling #startContainer()")
+            }
+
+            container!!.stop()
+            closed.set(true)
+        }
     }
 }

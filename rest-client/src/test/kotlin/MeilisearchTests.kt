@@ -23,21 +23,118 @@
 
 package dev.floofy.meilisearch.rest.tests
 
-import dev.floofy.meilisearch.rest.RESTClient
+import dev.floofy.meilisearch.data.types.TaskStatus
+import dev.floofy.meilisearch.rest.task.waitForCompletion
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.Clock
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class MeilisearchTests: AbstractMeilisearchTest() {
     @Test
     fun `can we get meilisearch version`() {
-        val client = RESTClient {
-            endpoint = "${container!!.host}:${container!!.getMappedPort(7700)}"
-        }
-
+        val client = createClient()
         runBlocking {
             val version = client.version()
             assertEquals("0.27.2", version.pkgVersion)
+        }
+    }
+
+    @Test
+    fun `create index and await the task completion`() {
+        val client = createClient()
+
+        runBlocking {
+            val task = client.createIndex("noel-logs", "id")
+            assertEquals(task.status, TaskStatus.ENQUEUED)
+
+            val completedTask = task.waitForCompletion(client = client)
+            assertEquals(TaskStatus.SUCCEEDED, completedTask.status)
+        }
+    }
+
+    @Test
+    fun `update index primary key and await task completion`() {
+        val client = createClient()
+
+        runBlocking {
+            val task = client.updateIndex("noel-logs", "owos")
+            assertEquals(task.status, TaskStatus.ENQUEUED)
+
+            val completedTask = task.waitForCompletion(client = client)
+            assertEquals(TaskStatus.SUCCEEDED, completedTask.status)
+        }
+    }
+
+    @Test
+    fun `get index tasks`() {
+        val client = createClient()
+        runBlocking {
+            val tasks = client.indexTasks("noel-logs")
+            assertEquals(2, tasks.results.size)
+        }
+    }
+
+    @Test
+    fun `list all documents`() {
+        val client = createClient()
+        runBlocking {
+            val documents = client.documents("noel-logs")
+            assertEquals(12, documents.size)
+        }
+    }
+
+    @Test
+    fun `add one document to tree`() {
+        val client = createClient()
+        runBlocking {
+            val task = client.createOrUpdateDocuments(
+                "noel-logs",
+                listOf(
+                    buildJsonObject {
+                        put("owos", "yay")
+                        put("message", "Hello, world!")
+                        put("@timestamp", Clock.System.now().toString())
+                    }
+                ),
+                "owos"
+            )
+
+            val completedTask = task.waitForCompletion(client = client)
+            assertEquals(TaskStatus.SUCCEEDED, completedTask.status)
+        }
+    }
+
+    @Test
+    fun `(stress test) add 10 documents`() {
+        val client = createClient()
+        runBlocking {
+            val tasks = mutableListOf<JsonObject>()
+            for (i in 0..10) {
+                tasks.add(
+                    buildJsonObject {
+                        put("owos", "owo-$i")
+                        put("message", "Hello from task $i!")
+                        put("@timestamp", Clock.System.now().toString())
+                    }
+                )
+            }
+
+            val task = client.createOrUpdateDocuments("noel-logs", tasks, "owos")
+            val completedTask = task.waitForCompletion(client = client)
+            assertEquals(TaskStatus.SUCCEEDED, completedTask.status)
+        }
+    }
+
+    @Test
+    fun `search through noel-logs index`() {
+        val client = createClient()
+        runBlocking {
+            val response = client.search("noel-logs", "hello")
+            assertEquals(0, response.hits.size)
         }
     }
 }

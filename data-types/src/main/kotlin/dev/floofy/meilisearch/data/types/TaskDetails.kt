@@ -25,10 +25,10 @@ package dev.floofy.meilisearch.data.types
 
 @kotlinx.serialization.Serializable
 data class TaskDetails(
-    val receivedDocuments: Int,
-    val indexedDocuments: Int,
-    val deletedDocuments: Int,
-    val primaryKey: String,
+    val receivedDocuments: Int? = null,
+    val indexedDocuments: Int? = null,
+    val deletedDocuments: Int? = null,
+    val primaryKey: String? = null,
     val rankingRules: List<String> = listOf(),
     val distinctAttribute: String? = null,
     val searchableAttributes: List<String> = listOf(),

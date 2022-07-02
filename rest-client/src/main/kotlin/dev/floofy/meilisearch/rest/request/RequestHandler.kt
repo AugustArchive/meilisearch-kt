@@ -25,20 +25,16 @@ package dev.floofy.meilisearch.rest.request
 
 import dev.floofy.meilisearch.rest.MeilisearchException
 import dev.floofy.meilisearch.rest.RESTClient
-import dev.floofy.utils.slf4j.logging
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-internal class RequestHandler(private val client: RESTClient) {
-    private val log by logging<RequestHandler>()
-
+class RequestHandler(val client: RESTClient) {
     suspend inline fun <reified T> request(
         method: HttpMethod,
         url: String,
         noinline override: (HttpRequestBuilder.() -> Unit)? = null
     ): T {
-        log.debug("Requesting to [${method.value} $url]")
         val res = client.resources.httpClient.request {
             this.method = method
             url("http://${client.resources.endpoint}$url")

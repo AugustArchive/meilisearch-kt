@@ -23,6 +23,8 @@
 
 package dev.floofy.meilisearch.data.types
 
+import kotlinx.serialization.SerialName
+
 /**
  * Represents the status of an asynchronous task.
  */
@@ -36,20 +38,24 @@ enum class TaskStatus {
     /**
      * The task request has been received and will be processed soon.
      */
+    @SerialName("enqueued")
     ENQUEUED,
 
     /**
      * The task is being processed
      */
+    @SerialName("processing")
     PROCESSING,
 
     /**
      * The task has been successfully processed.
      */
+    @SerialName("succeeded")
     SUCCEEDED,
 
     /**
      * A failure occurred when processing the task, no changes were made to the database.
      */
+    @SerialName("failed")
     FAILED;
 }

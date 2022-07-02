@@ -123,6 +123,8 @@ tasks {
     }
 
     withType<Test>().configureEach {
+        // this makes sures tests run even if they were ran previously
+        outputs.upToDateWhen { false }
         testLogging {
             events.addAll(listOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED))
             showStandardStreams = true
