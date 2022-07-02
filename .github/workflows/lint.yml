@@ -71,25 +71,65 @@ jobs:
         java-version: [17, 18]
     steps:
       - name: Checkout repository
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: actions/checkout@v3
 
       - name: Setup Java ${{ matrix.java-version }}
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
 
       - name: Setup Gradle
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: gradle/gradle-build-action@v2
 
       - name: Let gradlew be executable
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: chmod +x ./gradlew
 
       - name: Lints the repository via Spotless for any linting errors.
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew spotlessCheck --no-daemon
 
       - name: Compiles the Kotlin sources for any compiler errors
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew compileKotlin --no-daemon
 
       - name: Unit test the project
+        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew test --no-daemon
+
+      - name: Generate documentation
+        if: !contains(github.event.head_commit.message, '[ci skip]')
+        run: chmod +x ./scripts/deploy-docs.sh && ./scripts/deploy-docs.sh
+
+      - name: Check if Git repo is dirty
+        id: git_status
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo '::set-output name=DIRTY::true'
+          else
+            echo '::set-output name=DIRTY::false'
+          fi
+
+      - name: Commit changes (if dirty)
+        if: contains(steps.git_status.outputs.DIRTY, 'true')
+        run: |
+          git config --global user.name "Noel[bot]"
+          git config --global user.email "noelbot@users.noreply.github.com"
+          git config --global committer.name "Noel"
+          git config --global committer.email "cutie@floofy.dev"
+          
+          git add .
+          git commit -m "chore: update API documentation [ci skip]"
+          git push -u origin master
+
+      - name: Deploy docs (if dirty)
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        if: contains(steps.git_status.outputs.DIRTY, 'true')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG_FILE: ./mkdocs.yml
+          EXTRA_PACKAGES: build-base
