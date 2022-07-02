@@ -71,38 +71,30 @@ jobs:
         java-version: [17, 18]
     steps:
       - name: Checkout repository
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: actions/checkout@v3
 
       - name: Setup Java ${{ matrix.java-version }}
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: ${{ matrix.java-version }}
 
       - name: Setup Gradle
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         uses: gradle/gradle-build-action@v2
 
       - name: Let gradlew be executable
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: chmod +x ./gradlew
 
       - name: Lints the repository via Spotless for any linting errors.
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew spotlessCheck --no-daemon
 
       - name: Compiles the Kotlin sources for any compiler errors
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew compileKotlin --no-daemon
 
       - name: Unit test the project
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: ./gradlew test --no-daemon
 
       - name: Generate documentation
-        if: !contains(github.event.head_commit.message, '[ci skip]')
         run: chmod +x ./scripts/deploy-docs.sh && ./scripts/deploy-docs.sh
 
       - name: Check if Git repo is dirty
@@ -123,7 +115,7 @@ jobs:
           git config --global committer.email "cutie@floofy.dev"
           
           git add .
-          git commit -m "chore: update API documentation [ci skip]"
+          git commit -m "chore: update API documentation"
           git push -u origin master
 
       - name: Deploy docs (if dirty)
