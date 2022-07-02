@@ -24,6 +24,7 @@ on:
   release:
     types:
       - published
+
 jobs:
   release:
     name: Release a new version
